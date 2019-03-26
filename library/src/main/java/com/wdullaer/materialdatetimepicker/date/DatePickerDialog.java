@@ -140,6 +140,7 @@ public class DatePickerDialog extends DialogFragment implements
     private boolean mDismissOnPause = false;
     private boolean mAutoDismiss = false;
     private int mDefaultView = MONTH_AND_DAY_VIEW;
+    private boolean mYearPickOnly = false;
     private int mOkResid = R.string.mdtp_ok;
     private String mOkString;
     private int mOkColor = -1;
@@ -739,6 +740,15 @@ public class DatePickerDialog extends DialogFragment implements
         mDefaultView = yearPicker ? YEAR_VIEW : MONTH_AND_DAY_VIEW;
     }
 
+    /**
+     * Show whether the year picker only.
+     */
+    public void showOnlyYearPicker(boolean yearPicker) {
+        mYearPickOnly = yearPicker;
+        mDefaultView = YEAR_VIEW;
+
+    }
+
     @SuppressWarnings("unused")
     public void setFirstDayOfWeek(int startOfWeek) {
         if (startOfWeek < Calendar.SUNDAY || startOfWeek > Calendar.SATURDAY) {
@@ -1064,8 +1074,10 @@ public class DatePickerDialog extends DialogFragment implements
         mCalendar.set(Calendar.YEAR, year);
         mCalendar = adjustDayInMonthIfNeeded(mCalendar);
         updatePickers();
-        setCurrentView(MONTH_AND_DAY_VIEW);
-        updateDisplay(true);
+        if (!mYearPickOnly) {
+            setCurrentView(MONTH_AND_DAY_VIEW);
+            updateDisplay(true);
+        }
     }
 
     @Override
